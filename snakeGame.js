@@ -1,37 +1,62 @@
-'use strict'
+'use strict';
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-//Draw the rectangle
-ctx.fillStyle = "white";  // Set fill color to white
-ctx.fillRect(0, 0, canvas.width, canvas.height);  // Fill the entire canvas with white
-ctx.strokeStyle = "black";  // Set stroke color to black
-ctx.strokeRect(0, 0, canvas.width, canvas.height);  // Draw a black border around the canvas
-
-//representing the snake as a horizonatl line
-let snake = [{ x: 150, y: 150 },
+// Draw the rectangle
+function drawCanvas() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+}
+drawCanvas();
+// Representing the snake as a horizontal line
+let snake = [
+  { x: 150, y: 150 },
   { x: 140, y: 150 },
   { x: 130, y: 150 },
   { x: 120, y: 150 },
-  { x: 110, y: 150 },];
+  { x: 110, y: 150 }
+];
 
-//draw the snake using drawSnakePart function
+// Draw a part of the snake
 function drawPartOfSnake(snakePart) {
-  ctx.fillStyle = 'lightgreen'; ctx.strokestyle = 'black';
+  ctx.fillStyle = 'lightgreen';
+  ctx.strokestyle = 'black';
   ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
   ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
 }
 
+// Draw the entire snake
 function drawSnake() {
   snake.forEach(drawPartOfSnake);
 }
 
-//drawSnake();
+// let dx = 0;
+// let dy = -10;
+let dx = 10;
+let dy = 0;
 
-function moveVertically() {
-  const head = { x: snake[0].x + dx, y: snake[0].y };
-  //adding the new head value to the beginning of the snake array 
+function moveSnake() {
+
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
   snake.unshift(head);
-  //removing the last element of the snake array
   snake.pop();
 }
+
+// Call the moveSnake() and drawSnake() functions
+// moveSnake();
+// drawSnake();
+
+
+function move() {
+  setTimeout(function onTick() {
+    drawCanvas();
+    moveSnake();
+    drawSnake();
+    move();
+  }, 100)
+}
+
+move();
